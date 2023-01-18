@@ -3,17 +3,45 @@
 # What's your average churn rate?
 # Are there any rewwards program in place?
 
+notes = """
+Assumptions that we need to answer:
+
+- What is the cost of churn per employee (i.e as a percentage of salary)?
+- What percentage of the company revenue is spent on employee churn?
+
+- What is a reduction in churn that you can expect from Visix?
+"""
+
+assumptions_explanation = """
+1. According to https://www.peoplekeep.com/blog/employee-retention-the-real-cost-of-losing-an-employee, the average cost to replace an employee is 50pct of their salary, this is reflected as the\
+default value in the first slider
+2. According to various sites, there is a proportion of revenue that is spent on employee churn, this is reflected as the default value in the second slider
+3. According to various sites, there is a reduction in churn that you can expect from Visix (comparable to other wellbeing platforms), this is reflected as the default value in the third slider
+"""
+
+
+
 import streamlit as st
 import numpy as np
 
 st.title('Visix ROI Calculator')
 
+st.warning('You can adjust the assumptions below to see how they impact the ROI')
+with st.expander('See assumptions'):
+    st.write(assumptions_explanation)
+    st.write("")
+    st.write("")
+    # Cost of churn as a percentage of salary
+    churn_multiplier = st.slider('What is the cost of churn per employee (i.e as a percentage of salary) in %?', 0, 200, 50) / 100
+    # Percentage of revenue spent on employee churn
+    churn_revenue = st.slider('What percentage of the company revenue is spent on employee churn in %?', 0, 100, 2) / 100
+    # Percentage reduction in churn rate
+    churn_reduction = st.slider('What is a reduction in churn that you can expect from Visix in %?', 0, 20, 5) / 100
+
+
+# -----------------------------------------------------
+
 st.header('Employee Churn Calculator')
-
-info_text = "This calculator will help you estimate the cost of employee churn and the savings you can expect from implementing Visix."
-
-st.info(info_text)
-
 
 # Number of employees
 employees = st.slider('Number of employees', 1, 100000, 10)
@@ -28,7 +56,7 @@ salary = st.slider('What is the average salary per employee?', 0, 100000, 10000)
 revenue = st.slider('What is the company revenue?', 0, 100000000, 1000000)
 
 # Annual cost of employee churn assuming the cost of churn is 1.5 times the salary and 2% of revenue
-churn_cost = (employees * churn_rate) * salary * 0.7 + (revenue * 0.01)
+churn_cost = (employees * churn_rate) * salary * churn_multiplier + (revenue * churn_revenue)
 
 # Estimate savings from a reduction in turnover (assuming 5% reduction in churn rate)
 total_savings = churn_cost * 0.01
@@ -61,10 +89,6 @@ with col3:
     st.header(f'${total_savings_y3:,}')
 
 st.header('Visix Costing Calculator')
-
-info_text = "This calculator will help you calculate the cost for Visix and the ROI."
-
-st.info(info_text)
 
 # Cost per user for Visix (the cost of the software)
 cost_per_user = st.slider('What is the cost per user per month for Visix?', 0, 20, 1)
