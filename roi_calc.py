@@ -58,8 +58,8 @@ revenue = st.slider('What is the company revenue?', 0, 100000000, 1000000)
 # Annual cost of employee churn assuming the cost of churn is 1.5 times the salary and 2% of revenue
 churn_cost = (employees * churn_rate) * salary * churn_multiplier + (revenue * churn_revenue)
 
-# Estimate savings from a reduction in turnover (assuming 5% reduction in churn rate)
-total_savings = churn_cost * 0.01
+# Estimate savings from a reduction in turnover
+total_savings = churn_cost * churn_reduction
 
 # Total savings for year 1
 total_savings_y1 = int(total_savings)
