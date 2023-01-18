@@ -47,13 +47,13 @@ st.header('Employee Churn Calculator')
 employees = st.slider('Number of employees', 1, 100000, 10)
 
 # What's your average churn rate?
-churn_rate = st.slider('What is your average churn rate?', 0.0, 1.0, 0.1)
+churn_rate = st.slider('What is your average churn rate in %?', 0, 100, 10) / 100
 
 # Average salary per employee
-salary = st.slider('What is the average salary per employee?', 0, 100000, 10000)
+salary = st.slider('What is the average salary per employee ($)?', 0, 100000, 10000)
 
 # Company revenue
-revenue = st.slider('What is the company revenue?', 0, 100000000, 1000000)
+revenue = st.slider('What is the company annual revenue ($)?', 0, 100000000, 1000000)
 
 # Annual cost of employee churn assuming the cost of churn is 1.5 times the salary and 2% of revenue
 churn_cost = (employees * churn_rate) * salary * churn_multiplier + (revenue * churn_revenue)
@@ -95,6 +95,8 @@ cost_per_user = st.slider('What is the cost per user per month for Visix?', 0, 2
 
 # Total cost of Visix for the company
 total_cost = cost_per_user * employees * 12
+
+st.text('Total Cost for implementing Visix')
 
 col1, col2, col3 = st.columns(3)
 
